@@ -1,0 +1,21 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
+$jrp-primary: mat-palette($mat-light-blue);
+$jrp-accent: mat-palette($mat-blue-grey, 400);
+$jrp-warn: mat-palette($mat-red);
+
+$jrp-theme: mat-light-theme($jrp-primary, $jrp-accent, $jrp-warn);
+$jrp-typography: mat-typography-config(
+	$font-family: Quicksand
+);
+
+@include angular-material-typography($jrp-typography);
+@include angular-material-theme($jrp-theme);
+
+mat-error:not(.default), mat-hint:not(.default) {
+	width: 100%;
+	text-align: end;
+	& + .mat-form-field-hint-spacer { display: none }
+}
+mat-hint.error:not(.default) { color: #f44336 }

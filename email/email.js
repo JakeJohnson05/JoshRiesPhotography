@@ -37,16 +37,16 @@ const emailTemplates = require('./email-template');
 emailRouter.post('/contact', [
 	body('name')
 		.trim()
-		.exists().withMessage('Required')
-		.isLength({ max: 60 }).withMessage('Must not exceed 60 characters'),
+		.exists().withMessage('required')
+		.isLength({ max: 60 }).withMessage('maxlength'),
 	body('message')
 		.trim()
-		.exists().withMessage('Required')
-		.isLength({ max: 500 }).withMessage('Must not exceed 500 characters'),
+		.exists().withMessage('required')
+		.isLength({ max: 500 }).withMessage('maxlength'),
 	body('email')
-		.exists().withMessage('Required')
-		.isEmail().withMessage('Please enter a valid email address')
-		.isLength({ max: 320 }).withMessage('Must not exceed 320 characters')
+		.exists().withMessage('required')
+		.isEmail().withMessage('email')
+		.isLength({ max: 320 }).withMessage('maxlength')
 ], (req, res) => {
 	try {
 		/** handle errors (if any) from the express-validator */

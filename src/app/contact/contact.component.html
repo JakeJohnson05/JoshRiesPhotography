@@ -1,3 +1,24 @@
-<p>
-  contact works!
-</p>
+<div class="title">Contact</div>
+<div class="form-ctn">
+  <form [formGroup]="contactGroup" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="Name" [maxlength]="maxlength.name" />
+      <mat-hint [ngClass]="{'error':nameControl.errors?.maxlength}">{{ nameControl.value?.length || 0 }} / {{ maxlength.name }}</mat-hint>
+      <mat-error *ngIf="nameControl.errors?.required">Required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="email" placeholder="Email" [maxlength]="maxlength.email" />
+      <mat-hint [ngClass]="{'error':emailControl.errors?.maxlength}">{{ emailControl.value?.length || 0 }} / {{ maxlength.email }}</mat-hint>
+      <mat-error *ngIf="emailControl.errors?.required">Required</mat-error>
+      <mat-error *ngIf="emailControl.errors?.email">Invalid email address</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput formControlName="message" placeholder="Message" [maxlength]="maxlength.message"></textarea>
+      <mat-hint [ngClass]="{'error':messageControl.errors?.maxlength}">{{ messageControl.value?.length || 0 }} / {{ maxlength.message }}</mat-hint>
+      <mat-error *ngIf="messageControl.errors?.required">Required</mat-error>
+    </mat-form-field>
+    
+    <button mat-stroked-button type="submit" [disabled]="contactGroup.invalid">Submit</button>
+    <button mat-stroked-button type="submit">Submit</button>
+  </form>
+</div>
