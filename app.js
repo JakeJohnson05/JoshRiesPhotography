@@ -12,7 +12,7 @@ const path = require('path');
 const http = require('http');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-// const { emailRouter } = require('./email');
+const { emailRouter } = require('./email');
 
 /** The express application */
 const app = express();
@@ -21,8 +21,8 @@ const app = express();
 // Middleware
 
 // parsers for POST data
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 // protect against dangerous web vulnerabilities
 app.use(helmet());
 
@@ -32,7 +32,7 @@ app.use(helmet());
 // point static paths to dist
 app.use(express.static(path.join(__dirname, 'dist/')));
 // // use the emailRouter for emailing
-// app.use('/email', emailRouter);
+app.use('/email', emailRouter);
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
