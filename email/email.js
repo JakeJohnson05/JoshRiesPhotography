@@ -19,7 +19,7 @@ const transport = createTransport({
 	service: process.env.EMAIL_SERVICE,
 	auth: {
 		user: process.env.FROM_EMAIL,
-		pass: process.env.EMAIL_PASSWORD
+		pass: process.env.FROM_EMAIL_PASSWORD
 	}
 });
 
@@ -37,14 +37,14 @@ const transport = createTransport({
 emailRouter.post('/contact', [
 	body('name')
 		.trim()
-		.exists().withMessage('required')
+		.exists({ checkFalsy: true }).withMessage('required')
 		.isLength({ max: 60 }).withMessage('maxlength'),
 	body('message')
 		.trim()
-		.exists().withMessage('required')
+		.exists({ checkFalsy: true }).withMessage('required')
 		.isLength({ max: 500 }).withMessage('maxlength'),
 	body('email')
-		.exists().withMessage('required')
+		.exists({ checkFalsy: true }).withMessage('required')
 		.isEmail().withMessage('email')
 		.isLength({ max: 320 }).withMessage('maxlength')
 ], (req, res) => {
@@ -62,7 +62,7 @@ emailRouter.post('/contact', [
 		}).then(_ => res.status(200).json({ sucess: true })
 		).catch(_ => res.status(500).json('Issue sending email'))
 
-	} catch (err) { return res.status(500).json('Issue with the contact route' + 'Issue sending email') }
+	} catch (err) { return res.status(500).json('Issue sending email') }
 });
 
 

@@ -3,6 +3,21 @@ textarea {
 	min-height: 30px;
 	max-height: 150px;
 }
+div.loading-ctn {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	width: 40%;
+	z-index: 99;
+}
+div.title { font-size: 150% }
+div.description {
+	text-align: center;
+	margin: 24px 16px 8px
+}
+
 div#contact-page {
 	background-image: url("/assets/studio-setup.jpeg");
 	background-attachment: fixed;
@@ -21,15 +36,10 @@ div#contact-page {
 		background: #FFF;
 		color: #000;
 	}
-	& > div.meta {
-		font-size: 120%;
-		& > div.title { font-size: 150% }
-		& > div.description {
-			text-align: center;
-			margin: 24px 16px 8px
-		}
-	}
+	& > div.meta { font-size: 120% }
 	& > div.form-ctn {
+		position: relative;
+		transition: height .5s;
 		& mat-form-field {
 			display: block;
 			margin: 8px 16px;
@@ -39,5 +49,6 @@ div#contact-page {
 			left: 50%;
 			transform: translateX(-50%);
 		}
+		& div.success { font-size: 120% }
 	}
 }
