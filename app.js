@@ -3,15 +3,24 @@
  * serves and angular application.
  */
 
-// configure environment vars
+// Configure environment vars
 require('dotenv').config();
 
-// imports
+/** Server for the app and serves compiled angular output */
 const express = require('express');
+/** Establishes session with the client with cookies */
+const session = require('express-session');
+/** Store session data in the database */
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+/** The Sequelize ORM instance to the mysql database */
+const { sequelize } = require('./database');
+
+// Other Imports
 const path = require('path');
 const http = require('http');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
+/** Router for the sending of emails */
 const { emailRouter } = require('./email/email');
 
 /** The express application */
@@ -23,12 +32,27 @@ const app = express();
 // parsers for POST data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+/** The session store for the client session and the database */
+const sessionStore = new SequelizeStore({ db: sequelize });
+// set up the session for cookies
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  store: sessionStore,
+  saveUninitialized: false,
+  cookie: {
+    sameSite: true,
+    secure: false,
+    maxAge: 604800000,
+    httpOnly: true
+  }
+}));
+// Create/Sync tables for the session
+sessionStore.sync();
 // protect against dangerous web vulnerabilities
 app.use(helmet());
-
 ////////////////////////////////////////////////////////////////////////
 // Routes
-
 // point static paths to dist
 app.use(express.static(path.join(__dirname, 'dist/joshRiesPhotography/')));
 // use the emailRouter for emailing

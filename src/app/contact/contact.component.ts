@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { trigger, style, transition, animate } from '@angular/animations';
 
@@ -16,10 +17,11 @@ const generalStyleInfo = {
   styleUrls: ['./contact.component.scss'],
   animations: [
     trigger('slideEnterQuickDelay', [
-      transition(':enter', [generalStyleInfo.stylePre, animate('1s ease-in-out', generalStyleInfo.stylePost)])
+      transition(':enter', [generalStyleInfo.stylePre, animate('.5s ease-in-out', generalStyleInfo.stylePost)])
     ]),
     trigger('slideEnterLongDelay', [
-      transition(':enter', [generalStyleInfo.stylePre, animate('1s 1.5s ease-in-out', generalStyleInfo.stylePost)])
+      transition(':enter', [generalStyleInfo.stylePre, animate('.5s .5s ease-in-out', generalStyleInfo.stylePost)]),
+      transition(':leave', [generalStyleInfo.stylePost, animate('.5s ease-in-out', generalStyleInfo.stylePre)])
     ])
   ]
 })
@@ -29,24 +31,21 @@ export class ContactComponent {
   /** The max length of form inputs */
   maxlength = { name: 60, email: 320, message: 500 };
   /** The status of the email */
-  emailStatus: 'unsent'|'pending'|'success'|'error'|'unexpectedError';
+  emailStatus: 'unsent' | 'pending' | 'success' | 'error' | 'unexpectedError';
+  /** Emits the status of the clients session.sentEmail */
+  recentEmailStatus$: Observable<{ status: boolean }>;
 
   constructor(
     private fb: FormBuilder,
     private contactService: ContactService
   ) {
     this.contactGroup = this.fb.group({
-      name: ['', Validators.compose([
-        Validators.required, Validators.maxLength(this.maxlength.name), this.onlyWhitespaceValidator
-      ])],
-      email: ['', Validators.compose([
-        Validators.required, Validators.email, Validators.maxLength(this.maxlength.email)
-      ])],
-      message: ['', Validators.compose([
-        Validators.required, Validators.maxLength(this.maxlength.message), this.onlyWhitespaceValidator
-      ])]
+      name: ['', Validators.compose([Validators.required, Validators.maxLength(this.maxlength.name), this.onlyWhitespaceValidator])],
+      email: ['', Validators.compose([Validators.required, Validators.maxLength(this.maxlength.email), Validators.email])],
+      message: ['', Validators.compose([Validators.required, Validators.maxLength(this.maxlength.message), this.onlyWhitespaceValidator])]
     });
     this.emailStatus = 'unsent';
+    this.recentEmailStatus$ = this.contactService.recentEmailStatus;
   }
 
   get nameControl(): AbstractControl { return this.contactGroup.get('name') }
@@ -55,7 +54,7 @@ export class ContactComponent {
 
   /** Submits the form contact form */
   onSubmit(): void {
-    // if (this.trimAndValidate() && this.contactGroup.valid) {
+    if (this.trimAndValidate() && this.contactGroup.valid) {
       this.emailStatus = 'pending';
       this.contactGroup.disable();
       this.contactService.sendContactEmail(this.nameControl.value, this.emailControl.value, this.messageControl.value)
@@ -65,10 +64,9 @@ export class ContactComponent {
             this.emailStatus = 'success';
           } else if (errors) {
             this.emailStatus = 'error';
-            console.log(errors);
           } else this.emailStatus = 'unexpectedError';
         })
-    // } 
+    }
   }
 
   /** Trim the value for each control and return the form group validation status */

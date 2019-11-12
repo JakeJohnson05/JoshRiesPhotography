@@ -27,6 +27,7 @@ const transport = createTransport({
  * Sends a contact email from a user to us here at codexist
  * 
  * 200 - success
+ * 420 - ratelimitting
  * 422 - invalid params
  * 500 - server error 
  * 
@@ -49,6 +50,9 @@ emailRouter.post('/contact', [
 		.isLength({ max: 320 }).withMessage('maxlength')
 ], (req, res) => {
 	try {
+		// Check if the client has emailed 'recently'
+		if (req.session.sentEmail) return res.status(420).json('Recent post session active');
+
 		/** Contains the errors (if any) from the express-validator */
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) return res.status(422).json(errors.array());
@@ -59,11 +63,25 @@ emailRouter.post('/contact', [
 			to: process.env.FROM_EMAIL,
 			subject: 'Contact from your website',
 			html: emailTemplates.genContactEmail(req.body.name, req.body.email, req.body.message, req.body.company, req.body.url)
-		}).then(_ => res.status(200).json({ sucess: true })
-		).catch(_ => res.status(500).json('Issue sending email'))
+		}).then(_ => {
+			req.session.sentEmail = true;
+			return res.status(200).json({ success: true })
+		}).catch(_ => res.status(500).json('Issue sending email'))
 
 	} catch (err) { return res.status(500).json('Issue sending email') }
 });
+
+/**
+ * Check if the current client has an active session and `recently`
+ * sent an email.
+ * 
+ * `Recently` is defined as the session being active. This length is determined
+ * in /app.js
+ */
+emailRouter.get('/recentpost', (req, res) => {
+	console.log(req.session);
+	res.status(200).json(req.session.sentEmail || false);
+})
 
 
 module.exports = { emailRouter };

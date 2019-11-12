@@ -8,41 +8,72 @@
     <div class="description">For any reason, please fill out the form below and I will get back to you as soon as I can.</div>
   </div>
 
-  <div class="form-ctn" [@slideEnterLongDelay]>
-
-    <ng-container *ngIf="emailStatus !== 'success' else success">
-      <div class="loading-ctn" *ngIf="emailStatus === 'pending'">
-        <app-loading-animation></app-loading-animation>
-      </div>
-      <form [formGroup]="contactGroup" (ngSubmit)="onSubmit()">
-        <mat-form-field>
-          <input matInput formControlName="name" placeholder="Name" [maxlength]="maxlength.name" />
-          <mat-hint [ngClass]="{'error':nameControl.errors?.maxlength}">{{ nameControl.value?.length || 0 }} / {{ maxlength.name }}</mat-hint>
-          <mat-error *ngIf="nameControl.errors?.required">Required</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput formControlName="email" placeholder="Email" [maxlength]="maxlength.email" />
-          <mat-hint [ngClass]="{'error':emailControl.errors?.maxlength}">{{ emailControl.value?.length || 0 }} / {{ maxlength.email }}</mat-hint>
-          <mat-error *ngIf="emailControl.errors?.required">Required</mat-error>
-          <mat-error *ngIf="emailControl.errors?.email">Invalid email address</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <textarea matInput formControlName="message" placeholder="Message" [maxlength]="maxlength.message"></textarea>
-          <mat-hint [ngClass]="{'error':messageControl.errors?.maxlength}">{{ messageControl.value?.length || 0 }} / {{ maxlength.message }}</mat-hint>
-          <mat-error *ngIf="messageControl.errors?.required">Required</mat-error>
-        </mat-form-field>
-
-        <button mat-button type="submit" [disabled]="contactGroup.invalid || emailStatus === 'pending'">Submit</button>
-      </form>
+  <ng-container *ngIf="recentEmailStatus$ | async as recentEmail else loadingCtn" [ngSwitch]="recentEmail.status">
+    <ng-container *ngSwitchCase="true">
+      <ng-container *ngIf="emailStatus === 'success'; then formSuccess else recentlySent"></ng-container>
     </ng-container>
-
-    <ng-template #success>
-      <div class="success">
-        <div class="title">Thank you!</div>
-        <div class="description">Your form has been submitted.</div>
-      </div>
-    </ng-template>
-
-  </div>
+    <ng-container *ngSwitchDefault>
+      <ng-container *ngIf="emailStatus === 'success'; then formSuccess else formCtn"></ng-container>
+    </ng-container>
+  </ng-container>
 
 </div>
+
+<ng-template #formSuccess>
+  <div class="form-ctn" [@slideEnterLongDelay]>
+    <div class="success">
+      <div class="title">Thank you!</div>
+      <div class="description">Your form has been submitted.</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #recentlySent>
+  <div class="form-ctn" [@slideEnterLongDelay]>
+    <div class="recently-sent">
+      <div class="title">Enhance your calm</div>
+      <div class="description">It seems you have recently sent a contact request. Please allow for some response time before you submit again.</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loadingOverlay>
+  <div class="loading-ctn">
+    <app-loading-animation></app-loading-animation>
+  </div>
+</ng-template>
+
+<ng-template #loadingCtn>
+  <div class="form-ctn loading" [@slideEnterLongDelay]>
+    <div class="loading-ctn">
+      <app-loading-animation></app-loading-animation>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #formCtn>
+  <div class="form-ctn" [@slideEnterLongDelay]>
+    <ng-container *ngIf="emailStatus === 'pending'">
+      <ng-container *ngTemplateOutlet="loadingOverlay"></ng-container>
+    </ng-container>
+    <form [formGroup]="contactGroup" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <input matInput formControlName="name" placeholder="Name" [maxlength]="maxlength.name" />
+        <mat-hint [ngClass]="{'error':nameControl.errors?.maxlength}">{{ nameControl.value?.length || 0 }} / {{ maxlength.name }}</mat-hint>
+        <mat-error *ngIf="nameControl.errors?.required">Required</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="email" placeholder="Email" [maxlength]="maxlength.email" />
+        <mat-hint [ngClass]="{'error':emailControl.errors?.maxlength}">{{ emailControl.value?.length || 0 }} / {{ maxlength.email }}</mat-hint>
+        <mat-error *ngIf="emailControl.errors?.required">Required</mat-error>
+        <mat-error *ngIf="emailControl.errors?.email">Invalid email address</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput formControlName="message" placeholder="Message" [maxlength]="maxlength.message"></textarea>
+        <mat-hint [ngClass]="{'error':messageControl.errors?.maxlength}">{{ messageControl.value?.length || 0 }} / {{ maxlength.message }}</mat-hint>
+        <mat-error *ngIf="messageControl.errors?.required">Required</mat-error>
+      </mat-form-field>
+      <button mat-button type="submit" [disabled]="contactGroup.invalid || emailStatus === 'pending'">Submit</button>
+    </form>
+  </div>
+</ng-template>
