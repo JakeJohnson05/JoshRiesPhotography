@@ -1,0 +1,19 @@
+<div id="navbar">
+  <div class="logo">
+    <svg viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#000" stroke-width="2" stroke-linecap="round">
+        <circle cx="50" cy="50" r="15" />
+        <path d="M 50 40 Q60 40 60 50" />
+        <path d="M90 50 L90 70 Q90 80 80 80 L20 80 Q10 80 10 70 L10 30 Q10 20 20 20 L30 20 L35 15 L65 15 L70 20 L100 20" />
+      </g>
+      <g fill="#000" font-family="Quicksand" font-size="35px">
+        <text x="73" y="48">Josh</text>
+        <text x="88" y="75">Ries</text>
+      </g>
+      <path stroke="#FFF" stroke-width="4" d="M93 48 l0 30" />
+    </svg>
+  </div>
+  <div class="nav-opts">
+    <a *ngFor="let route of routes" mat-button [routerLink]="route.path">{{ route.title }}</a>
+  </div>
+</div>

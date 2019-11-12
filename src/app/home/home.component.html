@@ -1,0 +1,21 @@
+<div id="home-page" [style.background-position-y]="(100 - scrollY().float)/2+'px'">
+  <div class="page-1">
+    <div class="title" [attr.data-scroll]="scrollY().int">Hi, I'm <span>Josh</span></div>
+  </div>
+  <div class="page-2">
+    <div class="content-ctn">
+      <ng-container *ngTemplateOutlet="horizontalBar"></ng-container>
+      <div class="content">I am a photographer based out of Salt Lake City, Utah.<br/> I specialize in portraits and scenic media.</div>
+      <ng-container *ngTemplateOutlet="horizontalBar"></ng-container>
+    </div>
+    <div class="routes">
+      <a routerLink="/portfolio">My Work</a>
+      <a routerLink="/contact">Connect</a>
+    </div>
+  </div>
+</div>
+<ng-template #horizontalBar>
+  <svg viewBox="0 0 50 10" xmlns="http://www.w3.org/2000/svg">
+    <path stroke="#FFF" stroke-width="4" d="M5 5 L45 5" />
+  </svg>
+</ng-template>

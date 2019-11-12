@@ -1,0 +1,28 @@
+div#navbar {
+	height: 100px;
+	display: grid;
+	grid-template: 1fr / max-content auto;
+	align-items: center;
+	justify-content: space-between;
+	padding: 4px 8px;
+
+	& > div.logo > svg {
+		width: 130px;
+		cursor: default;
+	}
+
+	& > div.nav-opts {
+		display: grid;
+		margin-right: 8px;
+		grid-template: 1fr / auto auto auto;
+		@media (max-width: 400px) { grid-template: 1fr 1fr 1fr / auto }
+		& > a {
+			margin: 0 2px;
+			color: #555;
+			padding: 0 8px;
+			line-height: 30px;
+			transition: background .5s;
+			&:hover { background: #f2f2f2 }
+		}
+	}
+}
