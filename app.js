@@ -12,7 +12,7 @@ const path = require('path');
 const http = require('http');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-// const { emailRouter } = require('./email/email');
+const { emailRouter } = require('./email/email');
 
 /** The express application */
 const app = express();
@@ -32,7 +32,7 @@ app.use(helmet());
 // point static paths to dist
 app.use(express.static(path.join(__dirname, 'dist/joshRiesPhotography/')));
 // use the emailRouter for emailing
-// app.use('/email', emailRouter);
+app.use('/email', emailRouter);
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/joshRiesPhotography/index.html'));
@@ -43,7 +43,7 @@ app.get('*', (req, res) => {
 
 /** define the port from environment (=3000) */
 const port = process.env.PORT || '3000';
-const hostname = '127.0.0.1';
+// const hostname = '127.0.0.1';
 app.set('port', port);
 
 const server = http.createServer(app);
