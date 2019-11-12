@@ -15,6 +15,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
+import { LoadingAnimationComponent } from './loading-animation/loading-animation.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
     NavbarComponent,
     HomeComponent,
     ContactComponent,
-    PortfolioComponent
+    PortfolioComponent,
+    LoadingAnimationComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
     BrowserAnimationsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  entryComponents: [LoadingAnimationComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

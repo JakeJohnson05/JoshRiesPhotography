@@ -1,3 +1,43 @@
-div.title {
-	
+textarea {
+	resize: vertical;
+	min-height: 30px;
+	max-height: 150px;
+}
+div#contact-page {
+	background-image: url("/assets/studio-setup.jpeg");
+	background-attachment: fixed;
+	background-position-x: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: calc(100vh - 100px);
+	padding: 8px 16px;
+
+	& > div.meta, & > div.form-ctn {
+		width: 100%;
+		max-width: 700px;
+		margin: 16px auto;
+		padding: 16px 8px;
+		border-radius: 5px;
+		background: #FFF;
+		color: #000;
+	}
+	& > div.meta {
+		font-size: 120%;
+		& > div.title { font-size: 150% }
+		& > div.description {
+			text-align: center;
+			margin: 24px 16px 8px
+		}
+	}
+	& > div.form-ctn {
+		& mat-form-field {
+			display: block;
+			margin: 8px 16px;
+		}
+		& button[type="submit"] {
+			position: relative;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
 }

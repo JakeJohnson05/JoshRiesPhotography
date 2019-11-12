@@ -1,12 +1,27 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { trigger, style, transition, animate } from '@angular/animations';
 
 import { ContactService } from './contact.service';
+
+/** General animation data for the slideEnter animations */
+const generalStyleInfo = {
+  stylePre: style({ overflow: 'hidden', height: '0px', 'min-height': '0px', display: '*', 'padding-top': '0px', 'padding-bottom': '0px' }),
+  stylePost: style({ height: '*', 'min-height': '0px', display: '*', 'padding-top': '*', 'padding-bottom': '*' })
+}
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+  styleUrls: ['./contact.component.scss'],
+  animations: [
+    trigger('slideEnterQuickDelay', [
+      transition(':enter', [generalStyleInfo.stylePre, animate('1s ease-in-out', generalStyleInfo.stylePost)])
+    ]),
+    trigger('slideEnterLongDelay', [
+      transition(':enter', [generalStyleInfo.stylePre, animate('1s 1.5s ease-in-out', generalStyleInfo.stylePost)])
+    ])
+  ]
 })
 export class ContactComponent {
   /** The form group for contact emails */

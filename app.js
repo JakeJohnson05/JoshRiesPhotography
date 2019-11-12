@@ -12,7 +12,7 @@ const path = require('path');
 const http = require('http');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-const { emailRouter } = require('./email/email');
+// const { emailRouter } = require('./email/email');
 
 /** The express application */
 const app = express();
@@ -31,8 +31,8 @@ app.use(helmet());
 
 // point static paths to dist
 app.use(express.static(path.join(__dirname, 'dist/joshRiesPhotography/')));
-// // use the emailRouter for emailing
-app.use('/email', emailRouter);
+// use the emailRouter for emailing
+// app.use('/email', emailRouter);
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/joshRiesPhotography/index.html'));
@@ -48,6 +48,8 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
+server.listen(port, () => console.log(`Server running on localhost:${port}`));
+
 // if running in production, listen on the hostname, instead of localhost
 // if (!process.env.DEV) server.listen(port, hostname, () => console.log(`Server running on https://${hostname}:${port}`));
-/* else  */server.listen(port, () => console.log(`Server running on localhost:${port}`));
+// else server.listen(port, () => console.log(`Server running on localhost:${port}`));

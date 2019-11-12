@@ -6,9 +6,9 @@ div#navbar {
 	justify-content: space-between;
 	padding: 4px 8px;
 
-	& > div.logo > svg {
+	& > div.logo svg {
 		width: 130px;
-		cursor: default;
+		cursor: pointer;
 	}
 
 	& > div.nav-opts {

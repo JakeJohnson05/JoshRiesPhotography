@@ -56,7 +56,7 @@ emailRouter.post('/contact', [
 		// Send the email
 		transport.sendMail({
 			from: fromEmail,
-			to: 'jakejohnson05@gmail.com' || process.env.TO_EMAIL,
+			to: process.env.FROM_EMAIL,
 			subject: 'Contact from your website',
 			html: emailTemplates.genContactEmail(req.body.name, req.body.email, req.body.message, req.body.company, req.body.url)
 		}).then(_ => res.status(200).json({ sucess: true })

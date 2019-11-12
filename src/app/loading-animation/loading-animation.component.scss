@@ -1,0 +1,22 @@
+$circles: (45: 270, 35: 207, 25: 145, 15: 83);
+
+circle {
+	transform-origin: 50% 50%;
+	stroke-dashoffset: 0;
+}
+@each $radius, $dasharray in $circles {
+	circle[r="#{$radius}"] {
+		stroke-dasharray: #{$dasharray + 20} $dasharray;
+		animation: circle-spin-#{$radius} 3s ease-in-out infinite alternate-reverse;
+	}
+	@keyframes circle-spin-#{$radius} {
+		from {
+			stroke-dashoffset: 0;
+			transform: rotate(-90deg);
+		}
+		to {
+			stroke-dashoffset: 3 * $dasharray;
+			transform: rotate(-#{$dasharray}deg);
+		}
+	}
+}
