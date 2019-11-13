@@ -15,7 +15,7 @@ const generalBothQuery = query(':enter, :leave', [style({
 
 export const slideInAnimation = trigger('routeAnimations', [
 	transition('Home => *, Portfolio => Contact', [
-		// style({ position: 'relative' }),
+		style({ position: 'fixed' }),
 		generalBothQuery,
 		query(':enter', [style({ left: '100%' })]),
 		query(':leave', animateChild()),
@@ -26,7 +26,7 @@ export const slideInAnimation = trigger('routeAnimations', [
 		query(':enter', animateChild()),
 	]),
 	transition('Portfolio => Home, Contact => *', [
-		// style({ position: 'relative' }),
+		style({ position: 'fixed' }),
 		generalBothQuery,
 		query(':enter', [style({ left: '-100%' })]),
 		group([

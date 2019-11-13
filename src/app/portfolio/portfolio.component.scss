@@ -1,0 +1,21 @@
+div.images-ctn {
+	position: relative;
+	display: flex;
+	width: 100vw;
+	flex-flow: row nowrap;
+	& > div.column {
+		display: flex;
+		position: relative;
+		height: max-content;
+		flex-flow: column nowrap;
+		overflow: hidden;
+		&[data-scroll^="-"] {
+			// opacity: .5;
+		}
+		& > img {
+			width: 100%;
+			// transition: width 1s;
+			// &:hover { width: 102%; }
+		}
+	}
+}

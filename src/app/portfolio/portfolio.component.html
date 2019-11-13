@@ -1,3 +1,10 @@
-<p>
-  portfolio works!
-</p>
+<div #imagesCtn class="images-ctn" *ngIf="images.length / 2 as splitIndex">
+  <!-- <div #column1 class="column" [attr.data-scroll]="100 - windowRef().scrollY + ' ' +(imagesCtn.offsetHeight - column1.offsetHeight)" [attr.data-offset]="imagesCtn.offsetHeight - column1.offsetHeight"> -->
+  <!-- <div #column1 class="column" [attr.data-scroll]="windowRef().scrollY / (imagesCtn.offsetHeight - column1.offsetHeight)" [style.top]="imagesCtn.offsetHeight-column1.offsetHeight+'px'"> -->
+  <div #column1 class="column" [style.top]="calcColTop(imagesCtn.offsetHeight-column1.offsetHeight, windowRef().scrollY)">
+    <img *ngFor="let img of images.slice(0, splitIndex)" [src]="img.path" alt="Photo" />
+  </div>
+  <div #column2 class="column" [style.top]="calcColTop(imagesCtn.offsetHeight-column2.offsetHeight, windowRef().scrollY)">
+    <img *ngFor="let img of images.slice(splitIndex)" [src]="img.path" alt="Photo" />
+  </div>
+</div>

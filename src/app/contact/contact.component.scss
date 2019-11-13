@@ -22,17 +22,21 @@ div.description {
 }
 
 div#contact-page {
-	background-image: url("/assets/studio-setup.jpeg");
-	background-attachment: fixed;
-	background-position-x: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	position: relative;
 	min-height: calc(100vh - 100px);
 	padding: 8px 16px;
+	& > img {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		transform: translateX(-16px);
+	}
 }
 div.meta, div.form-ctn {
 	width: 100%;
 	max-width: 700px;
+	position: relative;
 	margin: 16px auto;
 	padding: 16px 8px;
 	border-radius: 5px;
@@ -41,7 +45,6 @@ div.meta, div.form-ctn {
 }
 div.meta { font-size: 120% }
 div.form-ctn {
-	position: relative;
 	transition: height .5s;
 	& mat-form-field {
 		display: block;

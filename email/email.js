@@ -78,10 +78,7 @@ emailRouter.post('/contact', [
  * `Recently` is defined as the session being active. This length is determined
  * in /app.js
  */
-emailRouter.get('/recentpost', (req, res) => {
-	console.log(req.session);
-	res.status(200).json(req.session.sentEmail || false);
-})
+emailRouter.get('/recentpost', (req, res) => res.status(200).json(req.session.sentEmail || false));
 
 
 module.exports = { emailRouter };
