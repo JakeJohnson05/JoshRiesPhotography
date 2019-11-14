@@ -32,18 +32,23 @@ const app = express();
 // parsers for POST data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-/** The session store for the client session and the database */
-const sessionStore = new SequelizeStore({ db: sequelize });
-// set up the session for cookies
+/** The number of milliseconds in one hour */
+const msInHour = 3600000;
+/** The store for the session */
+const sessionStore = new SequelizeStore({
+  db: sequelize,
+  checkExpirationInterval: msInHour * 48
+});
+// set up the session and config for cookies
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
-  store: sessionStore,
   saveUninitialized: false,
+  store: sessionStore,
   cookie: {
     sameSite: true,
     secure: false,
-    maxAge: 604800000,
+    maxAge: msInHour * 6,
     httpOnly: true
   }
 }));

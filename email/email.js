@@ -27,7 +27,7 @@ const transport = createTransport({
  * Sends a contact email from a user to us here at codexist
  * 
  * 200 - success
- * 420 - ratelimitting
+ * 420 - rate limit for sending emails exceeded
  * 422 - invalid params
  * 500 - server error 
  * 
@@ -51,7 +51,9 @@ emailRouter.post('/contact', [
 ], (req, res) => {
 	try {
 		// Check if the client has emailed 'recently'
-		if (req.session.sentEmail) return res.status(420).json('Recent post session active');
+		try {
+			if (req.session.emailsSent >= 2) return res.status(420).json('Email rate limit exceeded');
+		} catch (_) { }
 
 		/** Contains the errors (if any) from the express-validator */
 		const errors = validationResult(req);
@@ -64,11 +66,13 @@ emailRouter.post('/contact', [
 			subject: 'Contact from your website',
 			html: emailTemplates.genContactEmail(req.body.name, req.body.email, req.body.message, req.body.company, req.body.url)
 		}).then(_ => {
-			req.session.sentEmail = true;
-			return res.status(200).json({ success: true })
+			try {
+				if (!req.session.emailsSent) req.session.emailsSent = 1;
+				else req.session.emailsSent++;
+			} catch (_) { return res.status(200).json({ success: true, emailsSent: 1 }) }
+			return res.status(200).json({ success: true, emailsSent: req.session.emailsSent })
 		}).catch(_ => res.status(500).json('Issue sending email'))
-
-	} catch (err) { return res.status(500).json('Issue sending email') }
+	} catch (_) { return res.status(500).json('Issue sending email') }
 });
 
 /**
@@ -78,7 +82,12 @@ emailRouter.post('/contact', [
  * `Recently` is defined as the session being active. This length is determined
  * in /app.js
  */
-emailRouter.get('/recentpost', (req, res) => res.status(200).json(req.session.sentEmail || false));
+emailRouter.get('/recentpost', (req, res) => {
+	try {
+		res.status(200).json(req.session.emailsSent || 0)
+	} catch (_) { res.status(200).json(0) }
+});
+
 
 
 module.exports = { emailRouter };

@@ -9,13 +9,6 @@ div.images-ctn {
 		height: max-content;
 		flex-flow: column nowrap;
 		overflow: hidden;
-		&[data-scroll^="-"] {
-			// opacity: .5;
-		}
-		& > img {
-			width: 100%;
-			// transition: width 1s;
-			// &:hover { width: 102%; }
-		}
+		& > img { width: 100% }
 	}
 }

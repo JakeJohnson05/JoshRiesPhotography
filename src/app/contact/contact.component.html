@@ -8,22 +8,24 @@
     <div class="description">For any reason, please fill out the form below and I will get back to you as soon as I can.</div>
   </div>
 
-  <ng-container *ngIf="recentEmailStatus$ | async as recentEmail else loadingCtn" [ngSwitch]="recentEmail.status">
-    <ng-container *ngSwitchCase="true">
-      <ng-container *ngIf="emailStatus === 'success'; then formSuccess else recentlySent"></ng-container>
+  <ng-container *ngIf="recentEmailStatus$ | async as recentEmails else loadingCtn" [ngSwitch]="emailStatus">
+    <ng-container *ngSwitchCase="'success'">
+      <ng-container *ngTemplateOutlet="formSuccess; context: recentEmails"></ng-container>
     </ng-container>
     <ng-container *ngSwitchDefault>
-      <ng-container *ngIf="emailStatus === 'success'; then formSuccess else formCtn"></ng-container>
+      <ng-container *ngTemplateOutlet="recentEmails.sent >= maxInquiries ? recentlySent:formCtn; context:recentEmails"></ng-container>
     </ng-container>
   </ng-container>
-
 </div>
 
-<ng-template #formSuccess>
+<ng-template #formSuccess let-emailsSent="sent">
   <div class="form-ctn" [@slideEnterLongDelay]>
     <div class="success">
       <div class="title">Thank you!</div>
       <div class="description">Your form has been submitted.</div>
+      <div class="extra">
+        <button *ngIf="maxInquiries > emailsSent else limitMetText" mat-button type="button" (click)="newInquiry()">New Inquiry</button>
+      </div>
     </div>
   </div>
 </ng-template>
@@ -32,10 +34,14 @@
   <div class="form-ctn" [@slideEnterLongDelay]>
     <div class="recently-sent">
       <div class="title">Enhance your calm</div>
-      <div class="description">It seems you have recently sent a contact request. Please allow for some response time before you submit again.</div>
+      <div class="description">
+        <ng-container *ngTemplateOutlet="limitMetText"></ng-container>
+      </div>
     </div>
   </div>
 </ng-template>
+
+<ng-template #limitMetText>You have recently submitted multiple inquiries. You will be able to submit another inquiry in less than 6 hours.</ng-template>
 
 <ng-template #loadingOverlay>
   <div class="loading-ctn">
@@ -51,7 +57,7 @@
   </div>
 </ng-template>
 
-<ng-template #formCtn>
+<ng-template #formCtn let-emailsSent="sent">
   <div class="form-ctn" [@slideEnterLongDelay]>
     <ng-container *ngIf="emailStatus === 'pending'">
       <ng-container *ngTemplateOutlet="loadingOverlay"></ng-container>
