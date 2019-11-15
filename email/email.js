@@ -13,7 +13,7 @@ const { body, validationResult } = require('express-validator');
 const emailTemplates = require('./email-template');
 
 /** The from address when sending emails */
-const fromEmail = `"Website Contact" ${process.env.FROM_EMAIL}`;
+const fromEmail = `"Josh Ries Photography" <${process.env.FROM_EMAIL}>`;
 /** The email transporter */
 const transport = createTransport({
 	service: process.env.EMAIL_SERVICE,
@@ -46,11 +46,12 @@ emailRouter.post('/contact', [
 		.isLength({ max: 500 }).withMessage('maxlength'),
 	body('email')
 		.exists({ checkFalsy: true }).withMessage('required')
+		.customSanitizer(email => email.toLowerCase())
 		.isEmail().withMessage('email')
 		.isLength({ max: 320 }).withMessage('maxlength')
 ], (req, res) => {
 	try {
-		// Check if the client has emailed 'recently'
+		// Check if the client has reached their max already
 		try {
 			if (req.session.emailsSent >= 2) return res.status(420).json('Email rate limit exceeded');
 		} catch (_) { }
@@ -71,8 +72,8 @@ emailRouter.post('/contact', [
 				else req.session.emailsSent++;
 			} catch (_) { return res.status(200).json({ success: true, emailsSent: 1 }) }
 			return res.status(200).json({ success: true, emailsSent: req.session.emailsSent })
-		}).catch(_ => res.status(500).json('Issue sending email'))
-	} catch (_) { return res.status(500).json('Issue sending email') }
+		}).catch(_ => res.status(501).json('Inquiry submission unsuccessful'))
+	} catch (_) { return res.status(500).json('Server break') }
 });
 
 /**

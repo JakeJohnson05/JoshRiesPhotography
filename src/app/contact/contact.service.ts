@@ -14,6 +14,17 @@ class FlaggedReplaySubject<T> {
   }
 }
 
+/** The response type when submiting an contact request */
+export class SendContactEmailRes {
+  success: boolean;
+  errors: {
+    value: string;
+    msg: string;
+    param: string;
+    location: string;
+  }[]
+}
+
 @Injectable({ providedIn: 'root' })
 export class ContactService {
   /** The base route for all email requests */
@@ -23,16 +34,19 @@ export class ContactService {
 
   constructor(
     private _http: HttpClient
-) {
+  ) {
     this._recentEmailStatus = new FlaggedReplaySubject<{ sent: number }>();
   }
 
   /** Send the POST request to the server for emailing the contact email */
-  sendContactEmail(name: string, email: string, message: string): Observable<{ success: boolean, errors: any[] }> {
+  sendContactEmail(name: string, email: string, message: string): Observable<SendContactEmailRes> {
     return this._http.post<any>(`${this._emailRoute}contact`, { name, email, message }).pipe(
       tap(res => res.success && this._recentEmailStatus.rs.next({ sent: res.emailsSent || 1 })),
       map(_ => ({ success: true, errors: undefined })),
-      catchError(err => of({ success: false, errors: err.status === 422 ? err.error : undefined }))
+      catchError(err => {
+        if (err.status === 420) this._recentEmailStatus.rs.next({ sent: 2 });
+        return of({ success: false, errors: err.status === 422 ? err.error : undefined });
+      })
     )
   }
 

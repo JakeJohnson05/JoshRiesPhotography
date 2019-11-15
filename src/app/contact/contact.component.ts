@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
-import { trigger, style, transition, animate } from '@angular/animations';
+import { trigger, style, transition, animate, state } from '@angular/animations';
 
-import { ContactService } from './contact.service';
+import { ContactService, SendContactEmailRes } from './contact.service';
 
 /** General animation data for the slideEnter animations */
 const generalStyleInfo = {
@@ -22,25 +22,30 @@ const generalStyleInfo = {
     trigger('slideEnterLongDelay', [
       transition(':enter', [generalStyleInfo.stylePre, animate('.5s .5s ease-in-out', generalStyleInfo.stylePost)]),
       transition(':leave', [generalStyleInfo.stylePost, animate('.5s ease-in-out', generalStyleInfo.stylePre)])
-    ])
+		]),
+		trigger('toggleCookiePolicy', [
+      transition(':enter', [generalStyleInfo.stylePre, animate('.5s ease-in-out', generalStyleInfo.stylePost)]),
+      transition(':leave', [generalStyleInfo.stylePost, animate('.5s ease-in-out', generalStyleInfo.stylePre)])
+		])
   ]
 })
 export class ContactComponent {
   /** The form group for contact emails */
   contactGroup: FormGroup;
   /** The max length of form inputs */
-  maxlength = { name: 60, email: 320, message: 500 };
+  maxlength = { name: 60, email: 254, message: 500 };
   /** The maximum number of Inquiries until the session resets */
   maxInquiries = 2;
   /** The status of the email */
   emailStatus: 'unsent' | 'pending' | 'success' | 'error' | 'unexpectedError';
   /** Emits the status of the clients session.sentEmail */
-  recentEmailStatus$: Observable<{ sent: number }>;
+	recentEmailStatus$: Observable<{ sent: number }>;
+	/** The current display of the cookie policy */
+	cookiePolicyDisplay: boolean;
 
   constructor(
     private fb: FormBuilder,
-    private contactService: ContactService,
-    private asdf: any
+    private contactService: ContactService
   ) {
     this.contactGroup = this.fb.group({
       name: ['', Validators.compose([Validators.required, Validators.maxLength(this.maxlength.name), this.onlyWhitespaceValidator])],
@@ -48,8 +53,8 @@ export class ContactComponent {
       message: ['', Validators.compose([Validators.required, Validators.maxLength(this.maxlength.message), this.onlyWhitespaceValidator])]
     });
     this.recentEmailStatus$ = this.contactService.recentEmailStatus;
-    // this.emailStatus = 'unsent';
-    this.emailStatus = 'success';
+		this.emailStatus = 'unsent';
+		this.cookiePolicyDisplay = false;
   }
 
   get nameControl(): AbstractControl { return this.contactGroup.get('name') }
@@ -59,23 +64,34 @@ export class ContactComponent {
   /** Submits the form contact form */
   onSubmit(): void {
     if (this.trimAndValidate() && this.contactGroup.valid) {
-      this.emailStatus = 'pending';
-      this.contactGroup.disable();
-      this.contactService.sendContactEmail(this.nameControl.value, this.emailControl.value, this.messageControl.value)
-        .subscribe(({ success, errors }) => {
-          this.contactGroup.enable();
-          if (success) {
-            this.emailStatus = 'success';
-          } else if (errors) {
-            this.emailStatus = 'error';
-          } else this.emailStatus = 'unexpectedError';
-        })
+    this.emailStatus = 'pending';
+    this.contactGroup.disable();
+    this.contactService.sendContactEmail(this.nameControl.value, this.emailControl.value, this.messageControl.value)
+      .subscribe(({ success, errors }: SendContactEmailRes) => {
+        this.contactGroup.enable();
+        if (success) this.emailStatus = 'success';
+        else if (errors) {
+          this.handleFieldApiErrors(errors);
+          this.emailStatus = 'error';
+        } else this.emailStatus = 'unexpectedError';
+      })
     }
+  }
+
+  /** Handles and sets the appropriate errors for 422 error response codes */
+  private handleFieldApiErrors(errors: SendContactEmailRes['errors']): void {
+    errors.forEach(({ param, msg, value }) => {
+			let control = this.contactGroup.get(param);
+			if (!control) return;
+      control.setValue(value);
+      if (!control.errors) control.setErrors({ [msg]: true });
+      else control.errors[msg] = true;
+    });
   }
 
   /** To update the email status and set the form for another inquiry */
   newInquiry(): void {
-    this.messageControl.setValue('');
+    this.messageControl.reset('');
     this.emailStatus = 'unsent';
   }
 

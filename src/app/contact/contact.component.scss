@@ -3,6 +3,7 @@ textarea {
 	min-height: 30px;
 	max-height: 150px;
 }
+
 div.loading-ctn {
 	position: absolute;
 	top: 50%;
@@ -13,17 +14,32 @@ div.loading-ctn {
 	z-index: 99;
 }
 
+mat-form-field mat-error:nth-of-type(n + 2) { display: none }
 div.form-ctn.loading { height: 300px }
 div.title { font-size: 150% }
+
 div.description {
 	text-align: center;
 	margin: 24px 16px 8px
 }
+
 div.extra {
-	margin: 24px 8px 0;
+	margin: 24px 16px 0;
 	font-style: italic;
 	font-size: 95%;
 	color: #727272;
+	
+	&.cookie-alert {
+		text-align: center;
+		margin-bottom: 24px;
+		& > span.cookie-display-btn {
+			cursor: pointer;
+			color: inherit;
+			transition: .5s text-decoration-color, .2s color;
+			text-decoration: underline solid currentColor;
+			&:hover { color: #494949 }
+		}
+	}
 }
 
 div#contact-page {
@@ -38,6 +54,7 @@ div#contact-page {
 		transform: translateX(-16px);
 	}
 }
+
 div.meta, div.form-ctn {
 	width: 100%;
 	max-width: 700px;
@@ -48,6 +65,7 @@ div.meta, div.form-ctn {
 	background: #FFF;
 	color: #000;
 }
+
 div.form-ctn {
 	transition: height .5s;
 	& mat-form-field {
@@ -59,4 +77,29 @@ div.form-ctn {
 		left: 50%;
 		transform: translateX(-50%);
 	}
+}
+
+div.unexpected-err {
+	color: #f44336;
+	margin: 0 16px 8px;
+	& >  div.err-title {
+		font-size: 220%;
+    font-weight: 500;
+	}
+	& > div.err-msg {
+    margin: 8px 8px 0;
+		font-weight: 500;
+	}	
+}
+
+div.cookie-policy {
+	padding: 12px 24px 24px;
+	& > div.policy-heading {
+		font-family: Roboto;
+		font-weight: 500;
+		font-size: 120%;
+		&.heading-1 { font-size: 170% }
+	}
+	& > p { margin: 0.5em 1em 1.5em }
+	& span.cookie-bold { font-weight: 600 }
 }

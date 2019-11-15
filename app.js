@@ -37,7 +37,7 @@ const msInHour = 3600000;
 /** The store for the session */
 const sessionStore = new SequelizeStore({
   db: sequelize,
-  checkExpirationInterval: msInHour * 48
+  checkExpirationInterval: msInHour * 24
 });
 // set up the session and config for cookies
 app.use(session({
@@ -48,7 +48,7 @@ app.use(session({
   cookie: {
     sameSite: true,
     secure: false,
-    maxAge: msInHour * 6,
+    maxAge: msInHour * 5,
     httpOnly: true
   }
 }));

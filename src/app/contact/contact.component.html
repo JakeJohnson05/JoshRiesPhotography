@@ -26,6 +26,7 @@
       <div class="extra">
         <button *ngIf="maxInquiries > emailsSent else limitMetText" mat-button type="button" (click)="newInquiry()">New Inquiry</button>
       </div>
+      <ng-container *ngTemplateOutlet="cookiePolicy"></ng-container>
     </div>
   </div>
 </ng-template>
@@ -37,6 +38,7 @@
       <div class="description">
         <ng-container *ngTemplateOutlet="limitMetText"></ng-container>
       </div>
+      <ng-container *ngTemplateOutlet="cookiePolicy"></ng-container>
     </div>
   </div>
 </ng-template>
@@ -66,7 +68,7 @@
       <mat-form-field>
         <input matInput formControlName="name" placeholder="Name" [maxlength]="maxlength.name" />
         <mat-hint [ngClass]="{'error':nameControl.errors?.maxlength}">{{ nameControl.value?.length || 0 }} / {{ maxlength.name }}</mat-hint>
-        <mat-error *ngIf="nameControl.errors?.required">Required</mat-error>
+        <mat-error *ngIf="nameControl.errors?.required || nameControl.errors?.whitespace">Required</mat-error>
       </mat-form-field>
       <mat-form-field>
         <input matInput formControlName="email" placeholder="Email" [maxlength]="maxlength.email" />
@@ -77,9 +79,41 @@
       <mat-form-field>
         <textarea matInput formControlName="message" placeholder="Message" [maxlength]="maxlength.message"></textarea>
         <mat-hint [ngClass]="{'error':messageControl.errors?.maxlength}">{{ messageControl.value?.length || 0 }} / {{ maxlength.message }}</mat-hint>
-        <mat-error *ngIf="messageControl.errors?.required">Required</mat-error>
+        <mat-error *ngIf="messageControl.errors?.required || nameControl.errors?.whitespace">Required</mat-error>
       </mat-form-field>
+
+      <ng-container *ngTemplateOutlet="unexpectedErr"></ng-container>
+      <ng-container *ngTemplateOutlet="cookiePolicy"></ng-container>
+
       <button mat-button type="submit" [disabled]="contactGroup.invalid || emailStatus === 'pending'">Submit</button>
     </form>
+  </div>
+</ng-template>
+
+<ng-template #unexpectedErr>
+  <div class="unexpected-err" *ngIf="emailStatus === 'unexpectedError'" [@toggleCookiePolicy]>
+    <div class="err-title">Ooops.</div>
+    <div class="err-msg">Our server is having some unexpected issues. We will get this fixed as soon as possible. Please try again later.</div>
+  </div>
+</ng-template>
+
+<ng-template #cookiePolicy>
+  <div class="extra cookie-alert">By submitting an inquiry, you acknowledge and consent to our <span class="cookie-display-btn" (click)="cookiePolicyDisplay = !cookiePolicyDisplay">cookie policy.</span></div>
+
+  <div class="cookie-policy" *ngIf="cookiePolicyDisplay" [@toggleCookiePolicy]>
+    <div class="policy-heading heading-1">Josh Ries Photography Cookie Policy</div>
+    <p><span class="cookie-bold">In Summary:</span> The only cookies used on this site are for inquiry request rate limiting. We do not use nor share any cookies with third-party services.</p>
+
+    <div class="policy-heading heading-2">How do we use cookies?</div>
+    <p>We use cookies to limit the amount of inquiries you and other users can make within a short period of time. There is no other data stored or used. We use rate limiting to prevent our server from becoming overloaded.</p>
+
+    <div class="policy-heading heading-2">What type data is stored?</div>
+    <p>The data we store is as minimal as it gets. The only data we store is the number of inquiries you have sent. We do not save any specifics from your submissions. Our cookies have a very short life expiring after just a few hours.</p>
+
+    <div class="policy-heading heading-2">Do we affiliate with third-party cookie-related services?</div>
+    <p><span class="cookie-bold">NO.</span> Our cookies are born, live, and die all on this site. We do not share cookie-related data with any external services. The cookies used on this site are also configured to prevent cross site tracking. No data is ever shared with any external services.</p>
+
+    <div class="policy-heading heading-2">How can I restrict/prevent cookies?</div>
+    <p>You can prevent the creation of all cookies by not submitting any inquiries. The use of our cookies is limited to sending inquiries only. Unfortunately, The use of cookies for this purpose is unavoidable. Because our cookie use is so small, there is no way to configure settings for your personal cookies. Using the rest of the site will not create any cookies.</p>
   </div>
 </ng-template>
