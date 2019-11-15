@@ -2,18 +2,18 @@
 const Sequelize = require('sequelize');
 
 /** The MySql database is running on localhost on the server */
-var dbhost = 'localhost';
+const databaseHost = process.env.DB_HOST;
 /** The title of the database */
 const database = process.env.DB;
 /** Credentials to log into the database */
-const dbCreds = {
+const databaseCreds = {
 	username: process.env.DB_USERNAME,
 	password: process.env.DB_PASSWORD
 }
 
 /** Established connection instance with the database */
-const sequelize = new Sequelize(database, dbCreds.username, dbCreds.password, {
-	host: dbhost,
+const sequelize = new Sequelize(database, databaseCreds.username, databaseCreds.password, {
+	host: databaseHost,
 	dialect: 'mysql',
 	logging: false,
 	pool: {
