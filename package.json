@@ -1,12 +1,12 @@
 {
   "name": "josh-ries-photography",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "node app.js",
     "angular": "ng serve --proxy-config proxy.config.json --port 5000",
     "express": "nodemon app.js --watch app.js --watch email",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

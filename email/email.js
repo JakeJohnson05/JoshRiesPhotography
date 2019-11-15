@@ -63,7 +63,7 @@ emailRouter.post('/contact', [
 		// Send the email
 		transport.sendMail({
 			from: fromEmail,
-			to: process.env.FROM_EMAIL,
+			to: [process.env.TO_EMAIL, process.env.FROM_EMAIL],
 			subject: 'Contact from your website',
 			html: emailTemplates.genContactEmail(req.body.name, req.body.email, req.body.message, req.body.company, req.body.url)
 		}).then(_ => {
