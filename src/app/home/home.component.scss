@@ -4,17 +4,17 @@ div#home-page {
 	background-position: 50% 50%;
 	background-size: cover;
 	background-clip: border-box; 
-	mix-blend-mode: color;
+	// mix-blend-mode: color;
 	background-repeat: none;
 	min-height: 130vh;
 	position: absolute;
 	object-position: 50% 50%;
 	width: 100%;
-	& > img.scroll-img {
-		// height: 150vh;
-		// width: 100%;
-		// object-fit: cover;
-	}
+	// & > img.scroll-img {
+	// 	height: 150vh;
+	// 	width: 100%;
+	// 	object-fit: cover;
+	// }
 	& > img.mobile-img {
 		position: fixed;
 		pointer-events: none;
