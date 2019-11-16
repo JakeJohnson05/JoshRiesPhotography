@@ -1,15 +1,22 @@
 div#home-page {
-	position: relative;
+	background-image: url("/assets/jrp-bamboo-forest.jpg");
+	background-attachment: fixed;
+	background-position: 50% 50%;
+	background-size: cover;
 	mix-blend-mode: color;
-	min-height: calc(130vh);
+	background-repeat: none;
+	min-height: 130vh;
+	position: absolute;
+	object-position: 50% 50%;
+	width: 100%;
 	& > img.scroll-img {
-		position: absolute;
 		// height: 150vh;
-		width: 100%;
-		object-fit: cover;
+		// width: 100%;
+		// object-fit: cover;
 	}
 	& > img.mobile-img {
 		position: fixed;
+		pointer-events: none;
 		z-index: -100;
 		top: 0;
 		height: 100vh;
@@ -51,12 +58,12 @@ div#home-page {
 		padding: 16px 8px;
 		left: 50%;
 		width: 95vw;
-		max-width: 900px;
+		max-width: 580px;
 		transform: translateX(-50%);
 		& > div.content-ctn {
 			display: grid;
 			column-gap: 4px;
-			grid-template: 1fr / 30px auto 30px;
+			grid-template: 1fr / minmax(30px, 10%) 1fr minmax(30px, 10%);
 			align-items: center;
 			justify-content: center;
 		}
