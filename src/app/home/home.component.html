@@ -1,7 +1,7 @@
 <div id="home-page">
-  <img *ngIf="!isMobile else mobileImg" src="/assets/jrp-bamboo-forest.jpg" [style.object-position]="'50% '+(scrollY().float - 100)/2+'px'"/>
+  <img class="scroll-img" *ngIf="!isMobile else mobileImg" src="/assets/jrp-bamboo-forest.jpg" [style.object-position]="'50% '+(scrollY().float - 100)/2+'px'"/>
   <ng-template #mobileImg>
-    <img src="/assets/jrp-bamboo-forest.jpg"/>
+    <img class="mobile-img" src="/assets/jrp-bamboo-forest.jpg"/>
   </ng-template>
   <div class="page-1">
     <div class="title">Hi, I'm <span>Josh</span></div>

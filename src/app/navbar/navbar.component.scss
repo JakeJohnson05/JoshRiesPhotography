@@ -5,6 +5,8 @@ div#navbar {
 	align-items: center;
 	justify-content: space-between;
 	padding: 4px 8px;
+	background: #FFF;
+	z-index: 1;
 
 	& > div.logo svg {
 		width: 130px;
