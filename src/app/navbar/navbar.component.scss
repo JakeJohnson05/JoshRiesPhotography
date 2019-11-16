@@ -9,6 +9,7 @@ div#navbar {
 	& > div.logo svg {
 		width: 130px;
 		cursor: pointer;
+		&:focus { outline: none }
 	}
 
 	& > div.nav-opts {

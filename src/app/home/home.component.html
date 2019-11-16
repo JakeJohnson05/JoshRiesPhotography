@@ -1,8 +1,10 @@
-<!-- <div id="home-page" [style.background-position-y]="(100 - scrollY().float)/2+'px'"> -->
 <div id="home-page">
-  <img src="/assets/jrp-bamboo-forest.jpg" [style.object-position]="'50% '+(scrollY().float - 100)/2+'px'"/>
+  <img *ngIf="!isMobile else mobileImg" src="/assets/jrp-bamboo-forest.jpg" [style.object-position]="'50% '+(scrollY().float - 100)/2+'px'"/>
+  <ng-template #mobileImg>
+    <img src="/assets/jrp-bamboo-forest.jpg"/>
+  </ng-template>
   <div class="page-1">
-    <div class="title" [attr.data-scroll]="scrollY().int">Hi, I'm <span>Josh</span></div>
+    <div *ngIf="!isMobile else mobileTitle" class="title">Hi, I'm <span>Josh</span></div>
   </div>
   <div class="page-2">
     <div class="content-ctn">

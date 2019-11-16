@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,7 +36,8 @@ import { LoadingAnimationComponent } from './loading-animation/loading-animation
     MatFormFieldModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DeviceDetectorModule.forRoot()
   ],
   entryComponents: [LoadingAnimationComponent],
   bootstrap: [AppComponent]

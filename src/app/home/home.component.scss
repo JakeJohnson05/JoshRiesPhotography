@@ -28,9 +28,9 @@ div#home-page {
 			font-weight: 900;
 			mix-blend-mode: lighten;
 			& > span { font-size: 200% }
-			@for $y from 0 through 230 {
-				&[data-scroll="#{$y}"] { top: #{36}vh }
-			}
+			// @for $y from 0 through 230 {
+			// 	&[data-scroll="#{$y}"] { top: #{36}vh }
+			// }
 		}
 	}
 	& > div.page-2 {
