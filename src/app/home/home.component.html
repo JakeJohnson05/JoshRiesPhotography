@@ -1,6 +1,6 @@
 <!-- <div id="home-page" [style.background-position]="'50% '+(-scrollY().float - 100)/2+'px'"> -->
 <div id="home-page">
-  <!-- <img class="scroll-img" *ngIf="!isMobile else mobileImg" src="/assets/jrp-bamboo-forest.jpg" [style.object-position]="'50% '+(scrollY().float - 100)/2+'px'"/> -->
+  <img class="scroll-img" *ngIf="!isMobile else mobileImg" src="/assets/jrp-bamboo-forest.jpg" [style.object-position]="'50% '+(scrollY().float - 100)/2+'px'"/>
   <ng-template #mobileImg>
     <img class="mobile-img" src="/assets/jrp-bamboo-forest.jpg"/>
   </ng-template>
@@ -9,9 +9,9 @@
   </div>
   <div class="page-2">
     <div class="content-ctn">
-      <ng-container *ngTemplateOutlet="horizontalBar"></ng-container>
+      <!-- <ng-container *ngTemplateOutlet="horizontalBar"></ng-container> -->
       <div class="content">I am a photographer based out of Salt Lake City, Utah. I specialize in lifestyle, portrait and commercial media.</div>
-      <ng-container *ngTemplateOutlet="horizontalBar"></ng-container>
+      <!-- <ng-container *ngTemplateOutlet="horizontalBar"></ng-container> -->
     </div>
     <div class="routes">
       <a routerLink="/portfolio">My Work</a>
