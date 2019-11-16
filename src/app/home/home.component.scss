@@ -64,7 +64,7 @@ div#home-page {
 		& > div.content-ctn {
 			display: grid;
 			column-gap: 4px;
-			grid-template: 1fr / minmax(30px, 10%) 1fr minmax(30px, 10%);
+			grid-template: 1fr / 10% 1fr 10%;
 			align-items: center;
 			justify-content: center;
 		}
