@@ -3,6 +3,7 @@ div#home-page {
 	background-attachment: fixed;
 	background-position: 50% 50%;
 	background-size: cover;
+	background-clip: border-box; 
 	mix-blend-mode: color;
 	background-repeat: none;
 	min-height: 130vh;
