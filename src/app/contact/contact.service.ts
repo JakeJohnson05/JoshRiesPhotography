@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, first } from 'rxjs/operators';
 
 
 /** Simply a replay subject with a flag for if it has been emitted */
@@ -54,8 +54,9 @@ export class ContactService {
   get recentEmailStatus(): Observable<{ sent: number }> {
     if (!this._recentEmailStatus.emitted) {
       this._recentEmailStatus.emitted = true;
-      this._http.get<number>(`${this._emailRoute}recentpost`)
-        .subscribe(sent => this._recentEmailStatus.rs.next({ sent }));
+      this._http.get<number>(`${this._emailRoute}recentpost`).pipe(
+        first()
+      ).subscribe((sent: number) => this._recentEmailStatus.rs.next({ sent }));
     }
     return this._recentEmailStatus.rs.asObservable();
   }
