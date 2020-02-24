@@ -1,33 +1,15 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
-import { trigger, style, transition, animate, state } from '@angular/animations';
 
+import { contactPageTransitions } from '../animations';
 import { ContactService, SendContactEmailRes } from './contact.service';
-
-/** General animation data for the slideEnter animations */
-const generalStyleInfo = {
-  stylePre: style({ overflow: 'hidden', height: '0px', 'min-height': '0px', display: '*', 'padding-top': '0px', 'padding-bottom': '0px', opacity: 1 }),
-  stylePost: style({ height: '*', 'min-height': '0px', display: '*', 'padding-top': '*', 'padding-bottom': '*', opacity: 1 })
-}
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
-  animations: [
-    trigger('slideEnterQuickDelay', [
-      transition(':enter', [generalStyleInfo.stylePre, animate('.5s ease-in-out', generalStyleInfo.stylePost)])
-    ]),
-    trigger('slideEnterLongDelay', [
-      transition(':enter', [generalStyleInfo.stylePre, animate('.5s .5s ease-in-out', generalStyleInfo.stylePost)]),
-      transition(':leave', [generalStyleInfo.stylePost, animate('.5s ease-in-out', generalStyleInfo.stylePre)])
-		]),
-		trigger('toggleCookiePolicy', [
-      transition(':enter', [generalStyleInfo.stylePre, animate('.5s ease-in-out', generalStyleInfo.stylePost)]),
-      transition(':leave', [generalStyleInfo.stylePost, animate('.5s ease-in-out', generalStyleInfo.stylePre)])
-		])
-  ]
+  animations: contactPageTransitions
 })
 export class ContactComponent {
   /** The form group for contact emails */

@@ -13,6 +13,7 @@ const generalBothQuery = query(':enter, :leave', [style({
 	width: '100%'
 })]);
 
+/** Page transition animation */
 export const slideInAnimation = trigger('routeAnimations', [
 	transition('Home => *, Portfolio => Contact', [
 		style({ position: 'fixed' }),
@@ -35,4 +36,25 @@ export const slideInAnimation = trigger('routeAnimations', [
 		]),
 		query(':enter', animateChild({delay: 500})),
 	])
+]);
+
+/** General animation data for the slideEnter animations */
+const generalStyleInfo = {
+  stylePre: style({ overflow: 'hidden', height: '0px', 'min-height': '0px', display: '*', 'padding-top': '0px', 'padding-bottom': '0px', opacity: 1 }),
+  stylePost: style({ height: '*', 'min-height': '0px', display: '*', 'padding-top': '*', 'padding-bottom': '*', opacity: 1 })
+}
+
+/** Transition for all things on the contact page */
+export const contactPageTransitions = [
+	trigger('slideEnterQuickDelay', [
+	transition(':enter', [generalStyleInfo.stylePre, animate('.5s ease-in-out', generalStyleInfo.stylePost)])
+]),
+trigger('slideEnterLongDelay', [
+	transition(':enter', [generalStyleInfo.stylePre, animate('.5s .5s ease-in-out', generalStyleInfo.stylePost)]),
+	transition(':leave', [generalStyleInfo.stylePost, animate('.5s ease-in-out', generalStyleInfo.stylePre)])
+]),
+trigger('toggleCookiePolicy', [
+	transition(':enter', [generalStyleInfo.stylePre, animate('.5s ease-in-out', generalStyleInfo.stylePost)]),
+	transition(':leave', [generalStyleInfo.stylePost, animate('.5s ease-in-out', generalStyleInfo.stylePre)])
 ])
+]
