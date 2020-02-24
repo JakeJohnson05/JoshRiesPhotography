@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, tap, first } from 'rxjs/operators';
 
-
 /** Simply a replay subject with a flag for if it has been emitted */
 class FlaggedReplaySubject<T> {
   public rs: ReplaySubject<T>;

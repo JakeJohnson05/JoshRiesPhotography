@@ -14,6 +14,6 @@
     </svg>
   </div>
   <div class="nav-opts">
-    <a *ngFor="let route of routes" mat-button [routerLink]="route.path">{{ route.title }}</a>
+    <a *ngFor="let route of routes" mat-button [routerLink]="[route.path]">{{ route.title }}</a>
   </div>
 </div>
