@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 import { slideInAnimation } from './animations';
 
-// import { ContactService } from './contact/contact.service';
+import { ContactService } from './contact/contact.service';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +13,9 @@ import { slideInAnimation } from './animations';
 })
 export class AppComponent {
   constructor(
-    // private contactService: ContactService
+    private contactService: ContactService
   ) {
-    // this.contactService.recentEmailStatus;
+    this.contactService.recentEmailStatus;
   }
   
   /** Prepares and sends route data for animations */
